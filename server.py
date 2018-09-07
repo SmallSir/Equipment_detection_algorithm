@@ -9,8 +9,11 @@ from flask_api import status
 from match_model import got_train
 app = Flask(__name__)
 
-@app.route('/health',methods=['POST'])
+@app.route('/health',methods=['POST','GET'])
 def ac():
+    if request.method == 'GET':
+        print("'Error':Method Not Allowed,'Method':Only Accept POST Request")
+        return json.dumps(status.HTTP_505_HTTP_VERSION_NOT_SUPPORTED)
     datas = json.loads(request.get_data().decode())
     devId = datas['devId']
     code_order= datas['code_order']
@@ -18,7 +21,8 @@ def ac():
     k = -1
     for x in data:
         if len(data[x]) != k and k != -1:
-            return json.dumps(status.HTTP_505_HTTP_VERSION_NOT_SUPPORTED)
+            print("'Error': Unsupported Media Type,'Input': Please Input the Right Dict Type!")
+            return json.dumps(status.HTTP_405_METHOD_NOT_ALLOWED05_HTTP_VERSION_NOT_SUPPORTED)
         if k == -1:
             k = len(data[x])
     dict_message = {}
@@ -31,12 +35,10 @@ def ac():
         iso = IsolationForest(data)
         names = iso.equipment_pred()
         if len(names) != 0:
-            '''
             fault_name, fault_sim = match_model(X_test=data)  # 异常名称和异常相似度
-            dic_message['异常名称'] = fault_name
-            dic_message['异常相似度'] = fault_sim
-            '''
-            dic_message['异常指标名称'] = names
+            dic_message['fault_name'] = fault_name
+            dic_message['fault_same'] = fault_sim
+            dic_message['fault_index_name'] = names
         dic_message['coder_order'] = code_order
         dic_message['devld'] = devId
         return json.dumps(dic_message)
