@@ -9,7 +9,7 @@ from flask_api import status
 from match_model import got_train
 app = Flask(__name__)
 
-@app.route('/',methods=['POST'])
+@app.route('/health',methods=['POST'])
 def ac():
     datas = json.loads(request.get_data().decode())
     devId = datas['devId']
@@ -31,16 +31,18 @@ def ac():
         iso = IsolationForest(data)
         names = iso.equipment_pred()
         if len(names) != 0:
+            '''
             fault_name, fault_sim = match_model(X_test=data)  # 异常名称和异常相似度
             dic_message['异常名称'] = fault_name
             dic_message['异常相似度'] = fault_sim
+            '''
             dic_message['异常指标名称'] = names
-            dic_message['coder_order'] = code_order
-            dic_message['devld'] = devId
+        dic_message['coder_order'] = code_order
+        dic_message['devld'] = devId
         return json.dumps(dic_message)
 if __name__ == '__main__':
     app.debug = True
-    app.run(host = '192.168.0.36',port = 8080)
+    app.run(host='192.168.0.48',port=8080)
 
 
 
