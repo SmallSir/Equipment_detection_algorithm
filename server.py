@@ -32,25 +32,19 @@ def ac():
         if k == -1:
             k = len(data[x])
     dict_message = {}
-    #建模操作
-    if k != 1:
-        model = model_build(data)
-        model.model_building()
-        return dict({'Outcome': 'The Algorithm Training is Finished Successfully!'}),200
     #异常值检测
-    else:
-        dic_message = {}
-        iso = IsolationForest(data)
-        names = iso.equipment_pred()
-        #数据为异常值
-        if len(names) != 0:
-            fault_name, fault_sim = match_model(X_test=data)  # 异常名称和异常相似度
-            dic_message['fault_name'] = fault_name
-            dic_message['fault_same'] = fault_sim
-            dic_message['fault_index_name'] = names
-        dic_message['coder_order'] = code_order
-        dic_message['devld'] = devId
-        return json.dumps(dic_message),200
+    dic_message = {}
+    iso = IsolationForest(data)
+    names = iso.equipment_pred()
+    #数据为异常值
+    if len(names) != 0:
+        fault_name, fault_sim = match_model(X_test=data)  # 异常名称和异常相似度
+        dic_message['fault_name'] = fault_name
+        dic_message['fault_same'] = fault_sim
+        dic_message['fault_index_name'] = names
+    dic_message['coder_order'] = code_order
+    dic_message['devld'] = devId
+    return json.dumps(dic_message),200
 if __name__ == '__main__':
     app.debug = True
     app.run(host='192.168.0.48',port=8080)
