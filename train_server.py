@@ -30,7 +30,7 @@ def ac():
         if k == -1:
             k = len(data[x])
     # 建模操作
-    model = model_build(data)
+    model = model_build(train = data,code = str(code_order))
     model.model_building()
     return json.dumps(dict({'Outcome': 'The Algorithm Training is Finished Successfully!'})), 200
 
