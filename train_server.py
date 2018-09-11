@@ -36,4 +36,4 @@ def ac():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='192.168.0.48',port=8080)
+    app.run()

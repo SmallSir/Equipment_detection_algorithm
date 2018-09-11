@@ -2,7 +2,7 @@
 import requests
 import json
 import demjson
-url = 'http://192.168.0.48:8080/health'
+url = 'http://127.0.0.1:5000/health'
 dictss = {"health":{
          "cpu":[0.81,0.66,0.24,0.34,0.15],
          "disk":[0.81,0.66,0.24,0.34,0.15],
