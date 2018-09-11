@@ -9,7 +9,7 @@ dict = {"health":{
  "devId":1,
  "code_order":1}
 dict = {"health":{
-         "cpu":[34,11],
+         "cpu":[34,45],
          "disk":[34],
          "storage":[34]},
  "devId":1,
@@ -17,6 +17,6 @@ dict = {"health":{
  "code_order":1
 }
 test = json.dumps(dict)
-r= requests.get(url,data = json.dumps(dict))
+r= requests.post(url,data = json.dumps(dict))
 
 print(r.json())
