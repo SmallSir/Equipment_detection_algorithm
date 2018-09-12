@@ -4,9 +4,8 @@ from flask import request
 from moder_bulid import model_build
 from equiment_pre import IsolationForest
 import json
-from match_model import match_model
 from flask_api import status
-from match_model import got_train
+from match_model import Model_control
 app = Flask(__name__)
 
 @app.route('/health',methods=['POST','GET'])
@@ -39,12 +38,11 @@ def ac():
     iso = IsolationForest(test  = data,code = code_order,sys_id = sys_id,dev_ids =  dev_ids,equip_type = equip_type)
     names = iso.equipment_pred()
     #数据为异常值
-    '''
     if len(names) != 0:
-        fault_name, fault_sim = match_model(X_test=data,code = code_order,sys_id = sys_id,dev_ids = dev_ids,equip_type = equip_type)  # 异常名称和异常相似度
+        model_control = Model_control(X_test=data,code = code_order,sys_id = sys_id,dev_ids = dev_ids,equip_type = equip_type)  # 异常名称和异常相似度
+        fault_name, fault_sim = model_control.match_model()  # 对异常数据进行匹配，返回异常名称和异常相似度
         dic_message['fault_name'] = fault_name
         dic_message['fault_same'] = fault_sim
-    '''
     dic_message['fault_index_name'] = names
     dic_message['coder_order'] = code_order
     dic_message['devld'] = dev_ids
