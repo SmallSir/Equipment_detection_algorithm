@@ -16,8 +16,10 @@ def ac():
         })),405
     datas = json.loads(request.get_data().decode())
     #将接收数据赋给变量
-    devId = datas['devId']
-    code_order= datas['code_order']
+    sys_id = str(datas['sys_id'])
+    equip_type = str(datas['equip_type'])
+    dev_ids = str(datas['devId'])
+    code_order = str(datas['code_order'])
     data = datas['health']
     #检测接收的数据是否存在每个特征值的数据数量不同的情况
     k = -1
@@ -30,7 +32,7 @@ def ac():
         if k == -1:
             k = len(data[x])
     # 建模操作
-    model = model_build(train = data,code = str(code_order))
+    model = model_build(train = data,code = code_order,sys_id = sys_id,equip_type = equip_type,dev_ids = dev_ids)
     model.model_building()
     return json.dumps(dict({'Outcome': 'The Algorithm Training is Finished Successfully!'})), 200
 
