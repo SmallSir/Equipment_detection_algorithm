@@ -18,8 +18,10 @@ def ac():
         })),405
     datas = json.loads(request.get_data().decode())
     #将接收数据赋给变量
-    devId = datas['devId']
-    code_order= datas['code_order']
+    sys_id = str(datas['sys_id'])
+    equip_type = str(datas['equip_type'])
+    dev_ids = str(datas['devId'])
+    code_order = str(datas['code_order'])
     data = datas['health']
     #检测接收的数据是否存在每个特征值的数据数量不同的情况
     k = -1
@@ -34,16 +36,20 @@ def ac():
     dict_message = {}
     #异常值检测
     dic_message = {}
-    iso = IsolationForest(test  = data,code = code_order)
+    iso = IsolationForest(test  = data,code = code_order,sys_id = sys_id,dev_ids =  dev_ids,equip_type = equip_type)
     names = iso.equipment_pred()
     #数据为异常值
+    '''
     if len(names) != 0:
-        fault_name, fault_sim = match_model(X_test=data)  # 异常名称和异常相似度
+        fault_name, fault_sim = match_model(X_test=data,code = code_order,sys_id = sys_id,dev_ids = dev_ids,equip_type = equip_type)  # 异常名称和异常相似度
         dic_message['fault_name'] = fault_name
         dic_message['fault_same'] = fault_sim
+    '''
     dic_message['fault_index_name'] = names
     dic_message['coder_order'] = code_order
-    dic_message['devld'] = devId
+    dic_message['devld'] = dev_ids
+    dic_message['equip_type'] = equip_type
+    dic_message['sys_id'] = sys_id
     return json.dumps(dic_message),200
 if __name__ == '__main__':
     app.debug = True
