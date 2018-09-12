@@ -14,7 +14,8 @@ dicts = {"health":{
          "disk":[34],
          "storage":[34]},
  "devId":1,
-
+'sys_id':1,
+'equip_type':5,
  "code_order":1
 }
 r= requests.post(url,data = json.dumps(dicts))
